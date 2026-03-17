@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="config.js"></script>
+  <script>document.title = CONFIG.PAGE_TITLE;</script>
+</head>
+<body>
+
+<div class="shell">
+  <div class="layout">
+
+    <!-- LEFT: CONTENT -->
+    <div class="col-content">
+
+      <h1 class="name" id="name"></h1>
+      <span class="name-acronym" id="name-acronym"></span>
+
+      <p class="role" id="role"></p>
+
+      <!-- Divider -->
+      <img src="assets/divider.svg" alt="" aria-hidden="true" class="divider-wave" />
+      <!-- <svg class="divider-wave" width="100" height="7" viewBox="0 0 100 7" aria-hidden="true">
+        <path d="
+          M 0,3.5
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+          a 2.5,2.5 0 0,1 5,0
+          a 2.5,2.5 0 0,0 5,0
+        "/>
+      </svg> -->
+
+      <!-- Bio paragraphs rendered from CONFIG.BIO array -->
+      <div id="bio-container"></div>
+
+      <ul class="nav" id="nav"></ul>
+
+      <p class="copyright" id="copyright"></p>
+
+    </div>
+
+    <!-- RIGHT: PORTRAIT -->
+    <div class="col-photo">
+
+      <!-- Decorative thin ellipse outline behind the portrait -->
+      <svg class="line-accent" viewBox="0 0 310 370"
+           xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="155" cy="185" rx="148" ry="178"/>
+      </svg>
+
+      <div class="portrait" id="portrait"></div>
+
+      <!-- Caption hidden on homepage; remove .hidden on photo pages -->
+      <p class="portrait-label hidden" id="portrait-label"></p>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Name
+  document.getElementById("name").innerHTML =
+    `<span class="name-main">${CONFIG.FIRST_NAME}</span>` +
+    `<span class="name-init">${CONFIG.MIDDLE_INIT}</span>` +
+    `<span class="name-main">${CONFIG.LAST_NAME}</span>` +
+    `<span class="name-init">${CONFIG.LAST_INIT}</span>`;
+
+  // Acronym
+  document.getElementById("name-acronym").textContent = `· ${CONFIG.ACRONYM} ·`;
+
+  // Role line — personal descriptors
+  // When not set (or empty), the element hides itself automatically.
+  const roleEl = document.getElementById("role");
+  const dot = `<span class="role-dot"></span>`;
+  if (CONFIG.DESCRIPTORS && CONFIG.DESCRIPTORS.length) {
+    roleEl.innerHTML = CONFIG.DESCRIPTORS.join(` ${dot} `);
+  } else {
+    roleEl.style.display = "none";
+  }
+
+  // Bio array
+  // Items 0 and 1: standard bio paragraphs
+  // Item 2+: bio-alert (announcement/note style)
+  const bioContainer = document.getElementById("bio-container");
+  CONFIG.BIO.forEach((text, i) => {
+    const p = document.createElement("p");
+    p.className = i >= 2 ? "bio-alert" : "bio";
+    p.innerHTML = text;
+    bioContainer.appendChild(p);
+  });
+
+  // Nav
+  const navEl = document.getElementById("nav");
+  CONFIG.NAV_LINKS.forEach(link => {
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="${link.href}">${link.label}</a>`;
+    navEl.appendChild(li);
+  });
+
+  // Portrait
+  const portraitEl = document.getElementById("portrait");
+  if (CONFIG.PHOTO_SRC) {
+    const img = document.createElement("img");
+    img.src = CONFIG.PHOTO_SRC;
+    img.alt = CONFIG.PHOTO_ALT;
+    portraitEl.appendChild(img);
+  }
+
+  // Copyright
+  document.getElementById("copyright").textContent = CONFIG.COPYRIGHT;
+</script>
+
+</body>
+</html>

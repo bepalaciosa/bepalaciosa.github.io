@@ -1,0 +1,465 @@
+/* SELF-HOSTED FONTS */
+@font-face {
+  font-family: 'Cormorant SC';
+  src: url('fonts/CormorantSC-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cormorant SC';
+  src: url('fonts/CormorantSC-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cormorant SC';
+  src: url('fonts/CormorantSC-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('fonts/Lora-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('fonts/Lora-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('fonts/Lora-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('fonts/DMMono-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('fonts/DMMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('fonts/DMMono-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Mono';
+  src: url('fonts/DMMono-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* DESIGN TOKENS */
+:root {
+  --ivory-top:      #faf6ee;
+  --ivory-mid:      #f3ecdf;
+  --ivory-bottom:   #e8dece;
+
+  --ink:            #1a1410;
+  --ink-soft:       #4a4038;
+  --ink-nav:        #5c524a;
+  --ink-muted:      #7a7060;
+
+  --burgundy:       #6e1d2f;
+  --burgundy-pale:  #f0e4e7;
+  --burgundy-hover: #d4a0aa;
+
+  --white:          #ffffff;
+
+  --tiny: 0.7rem;
+  --smallish: 0.8rem;
+
+  --font-display:   'Cormorant SC', 'Georgia', serif;
+  --font-body:      'Lora', Georgia, serif;
+  --font-mono:      'DM Mono', 'Courier New', monospace;
+}
+
+/* RESET */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  color: var(--ink);
+  font-family: var(--font-body);
+  /* no overflow:hidden here — shell handles it */
+}
+
+/*  SHELL  */
+/*
+  Uses min-height so content is never clipped on short
+  or narrow viewports — scroll kicks in gracefully.
+  overflow:hidden only clips the decorative blobs,
+  not the text content.
+*/
+.shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 5rem;
+  position: relative;
+  overflow: hidden;  /* clips blobs only — layout can still scroll */
+
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E"),
+    linear-gradient(170deg,
+      var(--ivory-top)    0%,
+      var(--ivory-mid)   55%,
+      var(--ivory-bottom) 100%
+    );
+}
+
+/*  BG COLOR BLOBS  */
+.shell::before {
+  content: '';
+  position: absolute;
+  top: -25vh; right: -25vw;
+  width: 55vw; height: 65vh;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 25% 25%,
+    rgba(110, 29, 47, 0.32) 0%,
+    rgba(110, 29, 47, 0.14) 45%,
+    transparent 72%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shell::after {
+  content: '';
+  position: absolute;
+  bottom: -15vh; left: 60%;   /* 3/4 across, not in the corner */
+  transform: translateX(-50%);
+  width: 55vw; height: 60vh;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 75%,
+    rgba(195, 130, 175, 0.32) 0%,
+    rgba(180, 130, 195, 0.14) 45%,
+    transparent 72%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/*  LINE-ART ELLIPSE ACCENT 
+   Thin rotated ellipse behind the portrait.
+   Adjust rx/ry in the SVG, rotation below.
+ */
+.line-accent {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  width: 310px; height: 370px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.28;
+}
+
+.line-accent ellipse {
+  fill: none;
+  stroke: var(--burgundy);
+  stroke-width: 1;
+}
+
+/*  LAYOUT  */
+.layout {
+  width: 100%;
+  max-width: 1060px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  align-items: center;
+  gap: 5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/*  LEFT CONTENT COLUMN  */
+.col-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/*  NAME  */
+.name {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 4.2vw, 4.6rem);
+  line-height: 1.0;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Firstname + Lastname → bold burgundy */
+.name .name-main { color: var(--burgundy); font-weight: 600; }
+
+/* M. + L. → light ink */
+.name .name-init  { color: var(--ink); font-weight: 400; }
+
+/*  ACRONYM  */
+.name-acronym {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 0.2em;
+  color: var(--ink-muted);
+  margin-top: 0.55rem;
+}
+
+/*  ROLE/DESCRIPTORS LINE  */
+.role {
+  font-family: var(--font-mono);
+  font-size: var(--tiny);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.role-dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--burgundy);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/*  SQUIGGLY DIVIDER  */
+.divider-wave {
+  display: block;
+  margin: 1.6rem 0;
+  width: 202px;
+  height: 8px;
+}
+
+/*  BIO  */
+.bio {
+  font-size: clamp(1rem, 1.05vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--ink-soft);
+  max-width: 54ch;
+}
+
+.bio + .bio { margin-top: 0.85rem; }
+
+.bio strong { color: var(--ink); font-weight: 500; }
+.bio em     { font-style: italic; color: var(--ink-muted); }
+
+.bio a {
+  color: var(--burgundy);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(110,29,47,0.3);
+  transition: border-color 0.2s;
+}
+.bio a:hover { border-color: var(--burgundy); }
+
+/* Third bio item — announcement/alert style */
+.bio-alert {
+  font-size: clamp(0.82rem, 0.95vw, 0.92rem);
+  font-style: italic;
+  color: var(--ink-muted);
+  border-left: 2px solid rgba(110,29,47,0.3);
+  padding-left: 0.75rem;
+  margin-top: 0.85rem;
+  max-width: 54ch;
+}
+
+.bio-alert a {
+  color: var(--burgundy);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(110,29,47,0.3);
+  transition: border-color 0.2s;
+}
+.bio-alert a:hover { border-color: var(--burgundy); }
+
+/*  NAV LINKS  */
+.nav {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1.8rem;
+}
+
+.nav a {
+  font-family: var(--font-mono);
+  font-size: var(--smallish);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.2s;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 100%;
+  height: 1px;
+  background: var(--burgundy);
+  transition: right 0.25s ease;
+}
+
+.nav a:hover        { color: var(--burgundy); }
+.nav a:hover::after { right: 0; }
+
+/*  COPYRIGHT  */
+.copyright {
+  margin-top: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--tiny);
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  /* opacity: 0.5; */
+}
+
+/*  RIGHT PHOTO COLUMN ─ */
+.col-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/*  PORTRAIT  */
+.portrait {
+  width: 258px;
+  height: 258px;
+  border-radius: 50%;
+  background: var(--ivory-bottom);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 1;
+  box-shadow:
+    0 6px 32px rgba(26,20,16,0.11),
+    0 0 0 1px rgba(110,29,47,0.07);
+}
+
+.portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.portrait-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--ink-muted);
+  opacity: 0.38;
+  font-family: var(--font-mono);
+  font-size: var(--tiny);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/*  PORTRAIT CAPTION  */
+/* Hidden on homepage; remove .hidden on photo pages */
+.portrait-label {
+  font-family: var(--font-mono);
+  font-size: var(--tiny);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-align: center;
+  line-height: 1.8;
+  margin-top: 1rem;
+}
+
+.portrait-label.hidden { display: none; }
+
+/*  ANIMATIONS  */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.name          { animation: fadeUp 0.7s 0.00s ease both; }
+.name-acronym  { animation: fadeUp 0.6s 0.07s ease both; }
+.role          { animation: fadeUp 0.6s 0.13s ease both; }
+.divider-wave  { animation: fadeUp 0.5s 0.18s ease both; }
+.bio           { animation: fadeUp 0.6s 0.24s ease both; }
+.bio-alert     { animation: fadeUp 0.6s 0.28s ease both; }
+.tags          { animation: fadeUp 0.6s 0.32s ease both; }
+.nav           { animation: fadeUp 0.6s 0.38s ease both; }
+.copyright     { animation: fadeUp 0.5s 0.44s ease both; }
+.col-photo     { animation: fadeIn 0.8s 0.08s ease both; }
+
+/*  MOBILE  */
+@media (max-width: 700px) {
+  .shell {
+    padding: 3rem 2rem 4rem;
+    align-items: flex-start;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .col-photo {
+    order: -1;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
+
+  .portrait {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+  }
+
+  .line-accent { display: none; }
+
+  .portrait-label { text-align: left; margin-top: 0; }
+
+  .name { font-size: clamp(2.2rem, 9vw, 3.5rem); white-space: normal; }
+}
